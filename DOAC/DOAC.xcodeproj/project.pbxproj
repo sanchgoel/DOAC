@@ -8,22 +8,42 @@
 
 /* Begin PBXBuildFile section */
 		2E36F5A02B9AD14700143D0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E36F59F2B9AD14700143D0E /* AppDelegate.swift */; };
-		2E36F5A22B9AD14700143D0E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E36F5A12B9AD14700143D0E /* SceneDelegate.swift */; };
-		2E36F5A42B9AD14700143D0E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E36F5A32B9AD14700143D0E /* ViewController.swift */; };
-		2E36F5A72B9AD14700143D0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5A52B9AD14700143D0E /* Main.storyboard */; };
+		2E36F5A42B9AD14700143D0E /* WalkthroughViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E36F5A32B9AD14700143D0E /* WalkthroughViewController.swift */; };
 		2E36F5A92B9AD14900143D0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5A82B9AD14900143D0E /* Assets.xcassets */; };
 		2E36F5AC2B9AD14900143D0E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5AA2B9AD14900143D0E /* LaunchScreen.storyboard */; };
+		2E36F5BE2B9ADCAD00143D0E /* Mukta-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5B72B9ADCAC00143D0E /* Mukta-SemiBold.ttf */; };
+		2E36F5BF2B9ADCAD00143D0E /* Mukta-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5B82B9ADCAC00143D0E /* Mukta-ExtraLight.ttf */; };
+		2E36F5C02B9ADCAD00143D0E /* Mukta-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5B92B9ADCAC00143D0E /* Mukta-ExtraBold.ttf */; };
+		2E36F5C12B9ADCAD00143D0E /* Mukta-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5BA2B9ADCAD00143D0E /* Mukta-Light.ttf */; };
+		2E36F5C22B9ADCAD00143D0E /* Mukta-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5BB2B9ADCAD00143D0E /* Mukta-Regular.ttf */; };
+		2E36F5C32B9ADCAD00143D0E /* Mukta-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5BC2B9ADCAD00143D0E /* Mukta-Medium.ttf */; };
+		2E36F5C42B9ADCAD00143D0E /* Mukta-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5BD2B9ADCAD00143D0E /* Mukta-Bold.ttf */; };
+		2E36F5C62B9ADCB300143D0E /* ReenieBeanie-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E36F5C52B9ADCB300143D0E /* ReenieBeanie-Regular.ttf */; };
+		2E36F5C92B9ADD9A00143D0E /* Fonts+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E36F5C82B9ADD9A00143D0E /* Fonts+Extension.swift */; };
+		2E36F5CB2B9AE63200143D0E /* WalkthroughFirstCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E36F5CA2B9AE63200143D0E /* WalkthroughFirstCell.swift */; };
+		2E36F5CD2B9AE64A00143D0E /* WalkthroughSecondCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E36F5CC2B9AE64A00143D0E /* WalkthroughSecondCell.swift */; };
+		2E36F5CF2B9AF2A600143D0E /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E36F5CE2B9AF2A600143D0E /* Color+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2E36F59C2B9AD14700143D0E /* DOAC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DOAC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E36F59F2B9AD14700143D0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2E36F5A12B9AD14700143D0E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2E36F5A32B9AD14700143D0E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		2E36F5A62B9AD14700143D0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2E36F5A32B9AD14700143D0E /* WalkthroughViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughViewController.swift; sourceTree = "<group>"; };
 		2E36F5A82B9AD14900143D0E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2E36F5AB2B9AD14900143D0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2E36F5AD2B9AD14900143D0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2E36F5B72B9ADCAC00143D0E /* Mukta-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mukta-SemiBold.ttf"; sourceTree = "<group>"; };
+		2E36F5B82B9ADCAC00143D0E /* Mukta-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mukta-ExtraLight.ttf"; sourceTree = "<group>"; };
+		2E36F5B92B9ADCAC00143D0E /* Mukta-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mukta-ExtraBold.ttf"; sourceTree = "<group>"; };
+		2E36F5BA2B9ADCAD00143D0E /* Mukta-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mukta-Light.ttf"; sourceTree = "<group>"; };
+		2E36F5BB2B9ADCAD00143D0E /* Mukta-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mukta-Regular.ttf"; sourceTree = "<group>"; };
+		2E36F5BC2B9ADCAD00143D0E /* Mukta-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mukta-Medium.ttf"; sourceTree = "<group>"; };
+		2E36F5BD2B9ADCAD00143D0E /* Mukta-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Mukta-Bold.ttf"; sourceTree = "<group>"; };
+		2E36F5C52B9ADCB300143D0E /* ReenieBeanie-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ReenieBeanie-Regular.ttf"; sourceTree = "<group>"; };
+		2E36F5C82B9ADD9A00143D0E /* Fonts+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Fonts+Extension.swift"; sourceTree = "<group>"; };
+		2E36F5CA2B9AE63200143D0E /* WalkthroughFirstCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughFirstCell.swift; sourceTree = "<group>"; };
+		2E36F5CC2B9AE64A00143D0E /* WalkthroughSecondCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkthroughSecondCell.swift; sourceTree = "<group>"; };
+		2E36F5CE2B9AF2A600143D0E /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +76,65 @@
 		2E36F59E2B9AD14700143D0E /* DOAC */ = {
 			isa = PBXGroup;
 			children = (
+				2E36F5B42B9ADC4800143D0E /* Modules */,
+				2E36F5C72B9ADD8C00143D0E /* Utils */,
+				2E36F5B62B9ADC8200143D0E /* Resources */,
 				2E36F59F2B9AD14700143D0E /* AppDelegate.swift */,
-				2E36F5A12B9AD14700143D0E /* SceneDelegate.swift */,
-				2E36F5A32B9AD14700143D0E /* ViewController.swift */,
-				2E36F5A52B9AD14700143D0E /* Main.storyboard */,
-				2E36F5A82B9AD14900143D0E /* Assets.xcassets */,
 				2E36F5AA2B9AD14900143D0E /* LaunchScreen.storyboard */,
 				2E36F5AD2B9AD14900143D0E /* Info.plist */,
 			);
 			path = DOAC;
+			sourceTree = "<group>";
+		};
+		2E36F5B32B9ADC3900143D0E /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				2E36F5BD2B9ADCAD00143D0E /* Mukta-Bold.ttf */,
+				2E36F5B92B9ADCAC00143D0E /* Mukta-ExtraBold.ttf */,
+				2E36F5B82B9ADCAC00143D0E /* Mukta-ExtraLight.ttf */,
+				2E36F5BA2B9ADCAD00143D0E /* Mukta-Light.ttf */,
+				2E36F5BC2B9ADCAD00143D0E /* Mukta-Medium.ttf */,
+				2E36F5BB2B9ADCAD00143D0E /* Mukta-Regular.ttf */,
+				2E36F5B72B9ADCAC00143D0E /* Mukta-SemiBold.ttf */,
+				2E36F5C52B9ADCB300143D0E /* ReenieBeanie-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		2E36F5B42B9ADC4800143D0E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				2E36F5B52B9ADC4E00143D0E /* Walkthrough */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		2E36F5B52B9ADC4E00143D0E /* Walkthrough */ = {
+			isa = PBXGroup;
+			children = (
+				2E36F5A32B9AD14700143D0E /* WalkthroughViewController.swift */,
+				2E36F5CC2B9AE64A00143D0E /* WalkthroughSecondCell.swift */,
+				2E36F5CA2B9AE63200143D0E /* WalkthroughFirstCell.swift */,
+			);
+			path = Walkthrough;
+			sourceTree = "<group>";
+		};
+		2E36F5B62B9ADC8200143D0E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2E36F5A82B9AD14900143D0E /* Assets.xcassets */,
+				2E36F5B32B9ADC3900143D0E /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		2E36F5C72B9ADD8C00143D0E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2E36F5C82B9ADD9A00143D0E /* Fonts+Extension.swift */,
+				2E36F5CE2B9AF2A600143D0E /* Color+Extension.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +197,14 @@
 			files = (
 				2E36F5AC2B9AD14900143D0E /* LaunchScreen.storyboard in Resources */,
 				2E36F5A92B9AD14900143D0E /* Assets.xcassets in Resources */,
-				2E36F5A72B9AD14700143D0E /* Main.storyboard in Resources */,
+				2E36F5C22B9ADCAD00143D0E /* Mukta-Regular.ttf in Resources */,
+				2E36F5C12B9ADCAD00143D0E /* Mukta-Light.ttf in Resources */,
+				2E36F5C32B9ADCAD00143D0E /* Mukta-Medium.ttf in Resources */,
+				2E36F5C62B9ADCB300143D0E /* ReenieBeanie-Regular.ttf in Resources */,
+				2E36F5C02B9ADCAD00143D0E /* Mukta-ExtraBold.ttf in Resources */,
+				2E36F5BE2B9ADCAD00143D0E /* Mukta-SemiBold.ttf in Resources */,
+				2E36F5C42B9ADCAD00143D0E /* Mukta-Bold.ttf in Resources */,
+				2E36F5BF2B9ADCAD00143D0E /* Mukta-ExtraLight.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +215,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2E36F5A42B9AD14700143D0E /* ViewController.swift in Sources */,
+				2E36F5A42B9AD14700143D0E /* WalkthroughViewController.swift in Sources */,
+				2E36F5CF2B9AF2A600143D0E /* Color+Extension.swift in Sources */,
+				2E36F5CB2B9AE63200143D0E /* WalkthroughFirstCell.swift in Sources */,
+				2E36F5CD2B9AE64A00143D0E /* WalkthroughSecondCell.swift in Sources */,
 				2E36F5A02B9AD14700143D0E /* AppDelegate.swift in Sources */,
-				2E36F5A22B9AD14700143D0E /* SceneDelegate.swift in Sources */,
+				2E36F5C92B9ADD9A00143D0E /* Fonts+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		2E36F5A52B9AD14700143D0E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2E36F5A62B9AD14700143D0E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		2E36F5AA2B9AD14900143D0E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -298,7 +370,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = DOAC;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -328,7 +400,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = DOAC;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
