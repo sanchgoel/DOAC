@@ -38,6 +38,18 @@ class WalkthroughViewController: UIViewController {
         return button
     }()
     
+    lazy var skipButton: UIButton = {
+        let button = UIButton(type: .custom)
+        let projectText = "Skip"
+        button.setTitle(projectText, for: .normal)
+        button.titleLabel?.font = CustomFont.bold.withSize(16)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.black
@@ -66,6 +78,7 @@ class WalkthroughViewController: UIViewController {
         self.view.addSubview(titleLabel)
         
         self.view.addSubview(nextButton)
+        self.view.addSubview(skipButton)
         
         nextButtonWidthConstraint = nextButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 163)
         NSLayoutConstraint.activate([
@@ -74,7 +87,11 @@ class WalkthroughViewController: UIViewController {
             nextButton.heightAnchor.constraint(equalToConstant: 50),
             nextButtonWidthConstraint,
             nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            skipButton.heightAnchor.constraint(equalToConstant: 40),
+            skipButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
+            skipButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            skipButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             collectionView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -12),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -178,6 +195,10 @@ class WalkthroughViewController: UIViewController {
     @objc func nextTapped() {
         let nextPage = pageControl.currentPage + 1
         
+        if nextPage == 1 {
+            skipButton.isHidden = false
+        }
+        
         if nextPage >= totalCards {
             pageControl.currentPage = totalCards - 1  // Stay on the last card
             nextButton.setTitle("Start My Journey", for: .normal)
@@ -194,6 +215,10 @@ class WalkthroughViewController: UIViewController {
             }
         }
         self.view.layoutIfNeeded()
+    }
+    
+    @objc func skipTapped() {
+        
     }
 }
 
@@ -244,6 +269,10 @@ extension WalkthroughViewController: UICollectionViewDelegateFlowLayout, UIColle
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let currentPage = Int((scrollView.contentOffset.x + scrollView.contentInset.left) / (scrollView.frame.width - 88))
         pageControl.currentPage = currentPage
+        
+        if currentPage == 1 {
+            skipButton.isHidden = false
+        }
         
         if currentPage == totalCards - 1 {
             nextButton.setTitle("Start My Journey", for: .normal)
