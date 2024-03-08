@@ -16,6 +16,8 @@ class WalkthroughViewController: UIViewController {
     let totalCards = 4
     private var isInitialLoad = true
     var nextButtonWidthConstraint: NSLayoutConstraint!
+    var nextButtonBottomConstraint: NSLayoutConstraint!
+    var pageControlTopConstraint: NSLayoutConstraint!
     
     let walkthroughTitle = ["Beyond Small Talk, Diary-Style",
                             "Prologue to Impact",
@@ -81,13 +83,14 @@ class WalkthroughViewController: UIViewController {
         self.view.addSubview(skipButton)
         
         nextButtonWidthConstraint = nextButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 163)
+        nextButtonBottomConstraint = nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 76),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nextButton.heightAnchor.constraint(equalToConstant: 50),
             nextButtonWidthConstraint,
             nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            nextButtonBottomConstraint,
             skipButton.heightAnchor.constraint(equalToConstant: 40),
             skipButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
             skipButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -138,8 +141,9 @@ class WalkthroughViewController: UIViewController {
         
         // Constraints for pageControl...
         pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControlTopConstraint = pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 85)
         NSLayoutConstraint.activate([
-            pageControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 55),
+            pageControlTopConstraint,
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
@@ -159,7 +163,14 @@ class WalkthroughViewController: UIViewController {
             let angle = -baseRotationAngle * offset / maxOffset
             
             let radians = angle * .pi / 180
-            cell.transform = CGAffineTransform(rotationAngle: radians)
+            
+            // Calculate y-axis translation
+            let baseTranslationY: CGFloat = 10 // Maximum translation in y (adjust as needed)
+            let translationY = abs(offset) / maxOffset * baseTranslationY
+            
+            // Combine rotation and y-axis translation
+            let transform = CGAffineTransform(rotationAngle: radians).translatedBy(x: 0, y: translationY)
+            cell.transform = transform
 
             // Update zIndex for the cell based on its offset to center
             let distanceFromCenter = abs(offset)
@@ -189,6 +200,16 @@ class WalkthroughViewController: UIViewController {
             firstCell.transform = CGAffineTransform.identity
             firstCell.alpha = 1.0
             secondCell.alpha = 0.8
+        }, completion: nil)
+        
+        self.nextButton.alpha = 0.0
+        self.pageControl.alpha = 0.0
+        UIView.animate(withDuration: 0.3, delay: 1.0, options: .curveEaseInOut, animations: {
+            self.nextButtonBottomConstraint.constant = -50
+            self.nextButton.alpha = 1.0
+            self.pageControlTopConstraint.constant = 55
+            self.pageControl.alpha = 1.0
+            self.view.layoutIfNeeded()
         }, completion: nil)
     }
     

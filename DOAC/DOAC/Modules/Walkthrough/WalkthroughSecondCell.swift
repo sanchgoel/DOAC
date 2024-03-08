@@ -22,12 +22,12 @@ class WalkthroughSecondCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = .clear        
+        backgroundColor = .clear
         contentView.backgroundColor = .clear
         contentView.clipsToBounds = true
         contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor(hex: "#7C7C7C")?.cgColor
         contentView.layer.cornerCurve = .continuous
-        contentView.layer.borderColor = UIColor.black.cgColor
         contentView.layer.cornerRadius = 20
         
         imageView.frame = contentView.bounds
