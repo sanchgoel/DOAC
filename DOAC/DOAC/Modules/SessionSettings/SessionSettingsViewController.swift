@@ -13,6 +13,7 @@ class SessionSettingsViewController: UIViewController {
     let subTitleLabel = UILabel()
     let scrollView = UIScrollView()
     let stackView = UIStackView()
+    let containerView = UIView()
     var saveButtonBottomConstraint: NSLayoutConstraint!
     var vStackTopConstraint: NSLayoutConstraint!
     
@@ -61,6 +62,7 @@ class SessionSettingsViewController: UIViewController {
         setupScrollView()
         setupStackView()
         addSubviewsAndSeparators()
+        addAdditionalView()
     }
     
     func setupLabels() {
@@ -135,8 +137,7 @@ class SessionSettingsViewController: UIViewController {
         
         vStackTopConstraint = stackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 40)
         NSLayoutConstraint.activate([
-            vStackTopConstraint,
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            vStackTopConstraint,            
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
             stackView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48)
@@ -226,6 +227,73 @@ class SessionSettingsViewController: UIViewController {
         }
     }
     
+    private func addAdditionalView() {
+        containerView.layer.borderWidth = 1.0
+        containerView.layer.borderColor = UIColor(hex: "#7C7C7C")?.cgColor
+        containerView.layer.cornerRadius = 8
+        containerView.backgroundColor = .clear
+        containerView.alpha = 0.0
+        scrollView.addSubview(containerView)
+
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Set constraints for the containerView
+        NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 5),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20),
+            containerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48)
+        ])
+
+        // Create and configure the title label
+        let tipTitleLabel = UILabel()
+        tipTitleLabel.text = "TIP"
+        tipTitleLabel.font = CustomFont.semiBold.withSize(16)
+        tipTitleLabel.textColor = .white.withAlphaComponent(0.8)
+        tipTitleLabel.textAlignment = .left
+
+        // Create and configure the description label
+        let tipDescriptionLabel = UILabel()
+        let text = "Turn on your silent mode so notifications don’t interrupt you during your conversation"
+        
+        // Define the font and paragraph style
+        let font = CustomFont.regular.withSize(16)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 0.7
+        
+        // Create the attributed string
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .paragraphStyle: paragraphStyle
+        ]
+        let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
+        
+        tipDescriptionLabel.attributedText = attributedString
+        
+        tipDescriptionLabel.textColor = .white.withAlphaComponent(0.8)
+        tipDescriptionLabel.textAlignment = .left
+        tipDescriptionLabel.numberOfLines = 0
+
+        // Add labels to the containerView
+        containerView.addSubview(tipTitleLabel)
+        containerView.addSubview(tipDescriptionLabel)
+
+        tipTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        tipDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        // Set constraints for the labels
+        NSLayoutConstraint.activate([
+            tipTitleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
+            tipTitleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14),
+            tipDescriptionLabel.topAnchor.constraint(equalTo: tipTitleLabel.bottomAnchor, constant: 10),
+            tipDescriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14),
+            tipDescriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -14),
+            tipDescriptionLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -16)
+        ])
+    }
+
+    
     private func animateOptions() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.4, delay: 0.3, options: .curveEaseInOut, animations: {
@@ -233,6 +301,7 @@ class SessionSettingsViewController: UIViewController {
             self.saveButtonBottomConstraint.constant = -25
             self.stackView.alpha = 1.0
             self.saveButton.alpha = 1.0
+            self.containerView.alpha = 1.0
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
