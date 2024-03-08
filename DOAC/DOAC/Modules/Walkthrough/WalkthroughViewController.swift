@@ -12,6 +12,10 @@ class WalkthroughViewController: UIViewController {
     var collectionView: UICollectionView!
     var pageControl: UIPageControl!
     var titleLabel = UILabel()
+    var currentPage = 0
+    let totalCards = 4
+    private var isInitialLoad = true
+    var nextButtonWidthConstraint: NSLayoutConstraint!
     
     let walkthroughTitle = ["Beyond Small Talk, Diary-Style",
                             "Prologue to Impact",
@@ -27,7 +31,7 @@ class WalkthroughViewController: UIViewController {
         button.titleLabel?.font = CustomFont.bold.withSize(18)
         button.backgroundColor = UIColor.white
         button.setTitleColor(UIColor.black, for: .normal)
-//        button.addTarget(self, action: #selector(showVideoPicker), for: .touchUpInside)
+        button.addTarget(self, action: #selector(nextTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.clipsToBounds = true
         button.layer.cornerRadius = 25
@@ -38,6 +42,16 @@ class WalkthroughViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.black
         setupUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Perform the initial animation for the first cell
+        if isInitialLoad {
+            isInitialLoad = false  // Ensure animation runs only once
+            animateFirstCell()
+        }
     }
     
     func setupUI() {
@@ -53,11 +67,12 @@ class WalkthroughViewController: UIViewController {
         
         self.view.addSubview(nextButton)
         
+        nextButtonWidthConstraint = nextButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 163)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 76),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nextButton.heightAnchor.constraint(equalToConstant: 50),
-            nextButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 163),
+            nextButtonWidthConstraint,
             nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -85,6 +100,7 @@ class WalkthroughViewController: UIViewController {
         collectionView.backgroundColor = .clear
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 44, bottom: 0, right: 44)
         collectionView.decelerationRate = .fast
+        collectionView.clipsToBounds = false
         
         collectionView.register(WalkthroughFirstCell.self,
                                 forCellWithReuseIdentifier: "WalkthroughFirstCell")
@@ -115,6 +131,70 @@ class WalkthroughViewController: UIViewController {
         let indexPath = IndexPath(item: sender.currentPage, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
+    
+    func updateCellTransformAndOpacity(_ cell: UICollectionViewCell, collectionView: UICollectionView) {
+        // Delay the layout to ensure collection view's bounds are set
+        DispatchQueue.main.async {
+            let centerX = self.collectionView.contentOffset.x + self.collectionView.bounds.width / 2
+            let baseRotationAngle: CGFloat = 3.0 // Degrees for rotation
+            let offset = centerX - cell.center.x
+            let maxOffset = self.collectionView.bounds.size.width / 2
+            let angle = -baseRotationAngle * offset / maxOffset
+            
+            let radians = angle * .pi / 180
+            cell.transform = CGAffineTransform(rotationAngle: radians)
+
+            // Update zIndex for the cell based on its offset to center
+            let distanceFromCenter = abs(offset)
+            cell.layer.zPosition = -distanceFromCenter
+            
+            let minOpacity: CGFloat = 0.8 // Minimum opacity for cells not in the center
+            let maxOpacityDifference = 1 - minOpacity
+            let opacity = minOpacity + maxOpacityDifference * (1 - distanceFromCenter / maxOffset)
+            cell.alpha = opacity
+        }
+    }
+    
+    private func animateFirstCell() {
+        guard let firstCell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)),
+        let secondCell = collectionView.cellForItem(at: IndexPath(item: 1, section: 0))else {
+            return
+        }
+        
+        // Set initial state for animation (off-screen)
+        firstCell.transform = CGAffineTransform(translationX: collectionView.bounds.width/4, y: 0)
+            .rotated(by: 3 * .pi / 180)
+        firstCell.alpha = 0.5
+        secondCell.alpha = 0.0
+        
+        // Animate to final state (current position)
+        UIView.animate(withDuration: 0.9, delay: 0, usingSpringWithDamping: 0.65, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
+            firstCell.transform = CGAffineTransform.identity
+            firstCell.alpha = 1.0
+            secondCell.alpha = 0.8
+        }, completion: nil)
+    }
+    
+    @objc func nextTapped() {
+        let nextPage = pageControl.currentPage + 1
+        
+        if nextPage >= totalCards {
+            pageControl.currentPage = totalCards - 1  // Stay on the last card
+            nextButton.setTitle("Start My Journey", for: .normal)
+            nextButtonWidthConstraint.constant = 182
+        } else {
+            pageControl.currentPage = nextPage
+            collectionView.scrollToItem(at: IndexPath(item: nextPage, section: 0), at: .centeredHorizontally, animated: true)
+            if nextPage == totalCards - 1 {
+                nextButton.setTitle("Start My Journey", for: .normal)
+                nextButtonWidthConstraint.constant = 182
+            } else {
+                nextButton.setTitle("Next", for: .normal)
+                nextButtonWidthConstraint.constant = 163
+            }
+        }
+        self.view.layoutIfNeeded()
+    }
 }
 
 extension WalkthroughViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -133,6 +213,10 @@ extension WalkthroughViewController: UICollectionViewDelegateFlowLayout, UIColle
             cell.descriptionLabel.text = walkthroughDesc[indexPath.row - 1]
             return cell
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        updateCellTransformAndOpacity(cell, collectionView: collectionView)
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -155,5 +239,25 @@ extension WalkthroughViewController: UICollectionViewDelegateFlowLayout, UIColle
         let pageWidth = scrollView.frame.size.width - 88
         let currentPage = Int((targetContentOffset.pointee.x + scrollView.contentInset.left) / pageWidth)
         pageControl.currentPage = currentPage
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let currentPage = Int((scrollView.contentOffset.x + scrollView.contentInset.left) / (scrollView.frame.width - 88))
+        pageControl.currentPage = currentPage
+        
+        if currentPage == totalCards - 1 {
+            nextButton.setTitle("Start My Journey", for: .normal)
+            nextButtonWidthConstraint.constant = 182
+        } else {
+            nextButton.setTitle("Next", for: .normal)
+            nextButtonWidthConstraint.constant = 163
+        }
+        self.view.layoutIfNeeded()
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        for cell in collectionView.visibleCells {
+            updateCellTransformAndOpacity(cell, collectionView: collectionView)
+        }
     }
 }

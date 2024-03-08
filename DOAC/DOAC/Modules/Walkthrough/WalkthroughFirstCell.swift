@@ -22,7 +22,7 @@ class WalkthroughFirstCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = .black
+        backgroundColor = .clear
         layer.borderColor = UIColor(hex: "#7C7C7C")?.cgColor
         layer.cornerCurve = .continuous
         layer.borderWidth = 1.0

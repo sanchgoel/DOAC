@@ -22,8 +22,8 @@ class WalkthroughSecondCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = .black
-        contentView.backgroundColor = .black
+        backgroundColor = .clear        
+        contentView.backgroundColor = .clear
         contentView.clipsToBounds = true
         contentView.layer.borderWidth = 1
         contentView.layer.cornerCurve = .continuous
