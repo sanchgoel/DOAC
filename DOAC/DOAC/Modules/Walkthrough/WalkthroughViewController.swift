@@ -11,7 +11,7 @@ class WalkthroughViewController: UIViewController {
 
     var collectionView: UICollectionView!
     var pageControl: UIPageControl!
-    var titleLabel = UILabel()
+    let titleLabel = UILabel()
     var currentPage = 0
     let totalCards = 4
     private var isInitialLoad = true
@@ -204,7 +204,7 @@ class WalkthroughViewController: UIViewController {
         
         self.nextButton.alpha = 0.0
         self.pageControl.alpha = 0.0
-        UIView.animate(withDuration: 0.3, delay: 1.0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.4, options: .curveEaseInOut, animations: {
             self.nextButtonBottomConstraint.constant = -50
             self.nextButton.alpha = 1.0
             self.pageControlTopConstraint.constant = 55
@@ -224,6 +224,9 @@ class WalkthroughViewController: UIViewController {
             pageControl.currentPage = totalCards - 1  // Stay on the last card
             nextButton.setTitle("Start My Journey", for: .normal)
             nextButtonWidthConstraint.constant = 182
+            if nextPage == totalCards {
+                proceedToLogin()
+            }
         } else {
             pageControl.currentPage = nextPage
             collectionView.scrollToItem(at: IndexPath(item: nextPage, section: 0), at: .centeredHorizontally, animated: true)
@@ -239,7 +242,13 @@ class WalkthroughViewController: UIViewController {
     }
     
     @objc func skipTapped() {
-        
+        proceedToLogin()
+    }
+    
+    func proceedToLogin() {
+        let loginVC = LoginViewController()
+        self.navigationController?.pushViewController(loginVC,
+                                                      animated: true)
     }
 }
 
@@ -291,7 +300,7 @@ extension WalkthroughViewController: UICollectionViewDelegateFlowLayout, UIColle
         let currentPage = Int((scrollView.contentOffset.x + scrollView.contentInset.left) / (scrollView.frame.width - 88))
         pageControl.currentPage = currentPage
         
-        if currentPage == 1 {
+        if currentPage >= 1 {
             skipButton.isHidden = false
         }
         
