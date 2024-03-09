@@ -26,6 +26,8 @@
 		2E564F2E2B9B2DFE00805458 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E564F2D2B9B2DFE00805458 /* LoginViewController.swift */; };
 		2E564F312B9B53F900805458 /* GoalPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E564F302B9B53F900805458 /* GoalPreferencesViewController.swift */; };
 		2E564F342B9B680F00805458 /* SessionSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E564F332B9B680F00805458 /* SessionSettingsViewController.swift */; };
+		2E564F372B9C423F00805458 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E564F362B9C423F00805458 /* HomeViewController.swift */; };
+		2E564F392B9C621000805458 /* SuggestedConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E564F382B9C621000805458 /* SuggestedConversationCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		2E564F2D2B9B2DFE00805458 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2E564F302B9B53F900805458 /* GoalPreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPreferencesViewController.swift; sourceTree = "<group>"; };
 		2E564F332B9B680F00805458 /* SessionSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSettingsViewController.swift; sourceTree = "<group>"; };
+		2E564F362B9C423F00805458 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		2E564F382B9C621000805458 /* SuggestedConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedConversationCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +114,7 @@
 		2E36F5B42B9ADC4800143D0E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				2E564F352B9C423200805458 /* Home */,
 				2E564F322B9B67FA00805458 /* SessionSettings */,
 				2E564F2F2B9B538600805458 /* GoalPreferences */,
 				2E564F2C2B9B2DEE00805458 /* Login */,
@@ -168,6 +173,15 @@
 				2E564F332B9B680F00805458 /* SessionSettingsViewController.swift */,
 			);
 			path = SessionSettings;
+			sourceTree = "<group>";
+		};
+		2E564F352B9C423200805458 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				2E564F362B9C423F00805458 /* HomeViewController.swift */,
+				2E564F382B9C621000805458 /* SuggestedConversationCell.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -248,11 +262,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2E564F392B9C621000805458 /* SuggestedConversationCell.swift in Sources */,
 				2E564F2E2B9B2DFE00805458 /* LoginViewController.swift in Sources */,
 				2E36F5A42B9AD14700143D0E /* WalkthroughViewController.swift in Sources */,
 				2E564F312B9B53F900805458 /* GoalPreferencesViewController.swift in Sources */,
 				2E36F5CF2B9AF2A600143D0E /* Color+Extension.swift in Sources */,
 				2E36F5CB2B9AE63200143D0E /* WalkthroughFirstCell.swift in Sources */,
+				2E564F372B9C423F00805458 /* HomeViewController.swift in Sources */,
 				2E564F342B9B680F00805458 /* SessionSettingsViewController.swift in Sources */,
 				2E36F5CD2B9AE64A00143D0E /* WalkthroughSecondCell.swift in Sources */,
 				2E36F5A02B9AD14700143D0E /* AppDelegate.swift in Sources */,

@@ -122,6 +122,7 @@ class LoginViewController: UIViewController {
         let label = UILabel()
         label.font = CustomFont.bold.withSize(18)
         label.text = "Continue with \(title)"
+        label.textColor = .black
         
         imageView.contentMode = .scaleAspectFit
         label.textAlignment = .center
