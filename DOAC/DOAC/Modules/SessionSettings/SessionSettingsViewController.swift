@@ -9,46 +9,24 @@ import UIKit
 
 class SessionSettingsViewController: UIViewController {
     
-    let titleLabel = UILabel()
-    let subTitleLabel = UILabel()
-    let scrollView = UIScrollView()
-    let stackView = UIStackView()
-    let containerView = UIView()
-    var saveButtonBottomConstraint: NSLayoutConstraint!
-    var vStackTopConstraint: NSLayoutConstraint!
+    private let titleLabel = UILabel()
+    private let subTitleLabel = UILabel()
+    private let scrollView = UIScrollView()
+    private let stackView = UIStackView()
+    private let containerView = UIView()
+    private var vStackTopConstraint: NSLayoutConstraint!
+    private var saveButtonBottomConstraint: NSLayoutConstraint!
     
-    var settingsText = ["Set background music",
-                        "Volume",
-                        "Record our session",
-                        "Show conversation duration",
-                        "Dim screen after 5 minutes of conversation"]
+    private let settingsText = [
+        "Set background music",
+        "Volume",
+        "Record our session",
+        "Show conversation duration",
+        "Dim screen after 5 minutes of conversation"
+    ]
     
-    lazy var saveButton: UIButton = {
-        let button = UIButton(type: .custom)
-        let projectText = "Save Customization"
-        button.setTitle(projectText, for: .normal)
-        button.titleLabel?.font = CustomFont.bold.withSize(18)
-        button.backgroundColor = UIColor.white
-        button.setTitleColor(UIColor.black, for: .normal)
-        button.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.clipsToBounds = true
-        button.layer.cornerRadius = 25
-        button.alpha = 0.0
-        return button
-    }()
-    
-    lazy var backButton: UIButton = {
-        let button = UIButton(type: .system)
-        if let image = UIImage(named: "back") {
-            button.setImage(image, for: .normal)
-        }
-        button.tintColor = UIColor.white
-        button.imageView?.contentMode = .scaleAspectFit
-        button.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private lazy var saveButton: UIButton = createSaveButton()
+    private lazy var backButton: UIButton = createBackButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -314,5 +292,34 @@ class SessionSettingsViewController: UIViewController {
         let homeVC = HomeViewController()
         self.navigationController?.pushViewController(homeVC,
                                                       animated: true)
+    }
+}
+
+private extension SessionSettingsViewController {
+    func createSaveButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        let projectText = "Save Customization"
+        button.setTitle(projectText, for: .normal)
+        button.titleLabel?.font = CustomFont.bold.withSize(18)
+        button.backgroundColor = UIColor.white
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 25
+        button.alpha = 0.0
+        return button
+    }
+
+    func createBackButton() -> UIButton {
+        let button = UIButton(type: .system)
+        if let image = UIImage(named: "back") {
+            button.setImage(image, for: .normal)
+        }
+        button.tintColor = UIColor.white
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }
 }

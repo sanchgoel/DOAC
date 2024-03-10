@@ -9,41 +9,24 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    let titleLabel = UILabel()
-    let scrollView = UIScrollView()
-    let greetingLabel = UILabel()
-    let suggestedLabel = UILabel()
-    let statsLabel = UILabel()
-    let containerView = UIView()
-    let statsContainerView = UIView()
-    var statsTitleLabels = [UILabel]()
-    var statsValueLabels = [UILabel]()
+    private let titleLabel = UILabel()
+    private let scrollView = UIScrollView()
+    private let greetingLabel = UILabel()
+    private let suggestedLabel = UILabel()
+    private let statsLabel = UILabel()
+    private let containerView = UIView()
+    private let statsContainerView = UIView()
+    private var statsTitleLabels = [UILabel]()
+    private var statsValueLabels = [UILabel]()
     
-    var quickStartTopConstraint: NSLayoutConstraint!
-    var suggestedTopConstraint: NSLayoutConstraint!
-    var statsTopConstraint: NSLayoutConstraint!
+    private var quickStartTopConstraint: NSLayoutConstraint!
+    private var suggestedTopConstraint: NSLayoutConstraint!
+    private var statsTopConstraint: NSLayoutConstraint!
     
-    var statsSeeAllButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitle("See All", for: .normal)
-        button.titleLabel?.font = CustomFont.semiBold.withSize(14)
-        button.setTitleColor(UIColor(hex: "7C7C7C"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.textAlignment = .right
-        return button
-    }()
+    private lazy var statsSeeAllButton: UIButton = createStatsSeeAllButton()
+    private lazy var conversationSeeAllButton: UIButton = createconversationSeeAllButtonButton()
     
-    var conversationSeeAllButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitle("See All", for: .normal)
-        button.titleLabel?.font = CustomFont.semiBold.withSize(14)
-        button.setTitleColor(UIColor(hex: "7C7C7C"), for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.textAlignment = .right
-        return button
-    }()
-    
-    var collectionView: UICollectionView = {
+    private var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 145, height: 190)
@@ -55,19 +38,19 @@ class HomeViewController: UIViewController {
         return collectionView
     }()
     
-    var items = ["Mend Relationships",
-                 "Coping with Grief & loss",
-                 "Discrimination"]
+    private var items = ["Mend Relationships",
+                         "Coping with Grief & loss",
+                         "Discrimination"]
     
-    var statsText = ["Longest Session",
-                     "Longest Conversation",
-                     "Longest Streak",
-                     "Longest ..."]
-
-    var statsValueText = ["410 min",
-                          "31 min",
-                          "5 days",
-                          "31 min"]
+    private var statsText = ["Longest Session",
+                             "Longest Conversation",
+                             "Longest Streak",
+                             "Longest ..."]
+    
+    private var statsValueText = ["410 min",
+                                  "31 min",
+                                  "5 days",
+                                  "31 min"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -380,5 +363,27 @@ extension HomeViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SuggestedConversationCell", for: indexPath) as! SuggestedConversationCell
         cell.configureTitle(text: items[indexPath.row].uppercased())
         return cell
+    }
+}
+
+private extension HomeViewController {
+    func createStatsSeeAllButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        button.setTitle("See All", for: .normal)
+        button.titleLabel?.font = CustomFont.semiBold.withSize(14)
+        button.setTitleColor(UIColor(hex: "7C7C7C"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.textAlignment = .right
+        return button
+    }
+
+    func createconversationSeeAllButtonButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        button.setTitle("See All", for: .normal)
+        button.titleLabel?.font = CustomFont.semiBold.withSize(14)
+        button.setTitleColor(UIColor(hex: "7C7C7C"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.textAlignment = .right
+        return button
     }
 }
