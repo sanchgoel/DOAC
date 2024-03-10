@@ -12,6 +12,19 @@ class WalkthroughSecondCell: UICollectionViewCell {
     let descriptionLabel = UILabel()
     private let imageView = UIImageView()
 
+    // Constants for layout and style
+    private enum Layout {
+        static let cornerRadius: CGFloat = 20
+        static let borderWidth: CGFloat = 1
+        static let borderColorHex = "#7C7C7C"
+        static let titleTopMargin: CGFloat = 77
+        static let textHorizontalPadding: CGFloat = 26
+        static let descriptionTopMargin: CGFloat = 169
+        static let titleFontSize: CGFloat = 34
+        static let descriptionFontSize: CGFloat = 16
+        static let lineHeightMultiple: CGFloat = 0.7
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -22,65 +35,78 @@ class WalkthroughSecondCell: UICollectionViewCell {
     }
     
     private func setupUI() {
+        configureCell()
+        configureImageView()
+        configureTitleLabel()
+        configureDescriptionLabel()
+        setupConstraints()
+    }
+
+    private func configureCell() {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         contentView.clipsToBounds = true
-        contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor(hex: "#7C7C7C")?.cgColor
+        contentView.layer.borderWidth = Layout.borderWidth
+        contentView.layer.borderColor = UIColor(hex: Layout.borderColorHex)?.cgColor
         contentView.layer.cornerCurve = .continuous
-        contentView.layer.cornerRadius = 20
-        
-        imageView.frame = contentView.bounds
+        contentView.layer.cornerRadius = Layout.cornerRadius
+    }
+
+    private func configureImageView() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.image = UIImage(named: "whiteGradient")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageView)
+    }
 
+    private func configureTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
         titleLabel.text = "Beyond Small Talk, Diary-Style"
         titleLabel.numberOfLines = 0
-        titleLabel.font = CustomFont.reenieBeanie.withSize(34)
+        titleLabel.font = CustomFont.reenieBeanie.withSize(Layout.titleFontSize)
         titleLabel.textAlignment = .center
         contentView.addSubview(titleLabel)
+    }
 
+    private func configureDescriptionLabel() {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.textColor = UIColor.black.withAlphaComponent(0.8)
         descriptionLabel.numberOfLines = 0
-        
+        descriptionLabel.font = CustomFont.regular.withSize(Layout.descriptionFontSize)
+        descriptionLabel.textAlignment = .center
+
         let text = "Immerse in authentic conversations using The Conversation Cards, featuring questions asked by accomplished guests from The Diary Of A CEO podcast."
-        let attributedString = NSMutableAttributedString(string: text)
-        
-        // Set up paragraph style
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 0.7
+        paragraphStyle.lineHeightMultiple = Layout.lineHeightMultiple
         paragraphStyle.alignment = .center
-                
-        let font = CustomFont.regular.withSize(16)
-                
+
         let attributes: [NSAttributedString.Key: Any] = [
             .paragraphStyle: paragraphStyle,
-            .font: font
+            .font: descriptionLabel.font
         ]
         
-        // Apply attributes to the attributed string
-        attributedString.addAttributes(attributes, range: NSRange(location: 0, length: attributedString.length))
-        
-        // Assign the attributed string to the UILabel
+        let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
         descriptionLabel.attributedText = attributedString
-        contentView.addSubview(descriptionLabel)
 
+        contentView.addSubview(descriptionLabel)
+    }
+
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 77),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 26),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -26),
-            descriptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 169),
-            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 26),
-            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -26),
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Layout.titleTopMargin),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.textHorizontalPadding),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.textHorizontalPadding),
+
+            descriptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Layout.descriptionTopMargin),
+            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.textHorizontalPadding),
+            descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.textHorizontalPadding)
         ])
     }
 }

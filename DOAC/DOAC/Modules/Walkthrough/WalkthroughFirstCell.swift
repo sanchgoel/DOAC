@@ -12,6 +12,17 @@ class WalkthroughFirstCell: UICollectionViewCell {
     private let descLabel = UILabel()
     private let imageView = UIImageView()
 
+    // Constants for layout and design
+    private enum Constants {
+        static let cornerRadius: CGFloat = 20
+        static let borderWidth: CGFloat = 1
+        static let titleTopOffset: CGFloat = 176
+        static let descTopOffset: CGFloat = 210
+        static let titleFontSize: CGFloat = 28
+        static let descFontSize: CGFloat = 24
+        static let borderColorHex = "#7C7C7C"
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -23,44 +34,69 @@ class WalkthroughFirstCell: UICollectionViewCell {
     
     private func setupUI() {
         backgroundColor = .clear
-        contentView.layer.borderColor = UIColor(hex: "#7C7C7C")?.cgColor
-        contentView.layer.cornerCurve = .continuous
-        contentView.layer.borderWidth = 1.0
-        contentView.layer.cornerRadius = 20
-        contentView.clipsToBounds = true
-        contentView.backgroundColor = UIColor.clear
 
-        imageView.frame = contentView.bounds
+        // Configure content view
+        contentView.layer.borderColor = UIColor(hex: Constants.borderColorHex)?.cgColor
+        contentView.layer.cornerRadius = Constants.cornerRadius
+        contentView.layer.borderWidth = Constants.borderWidth
+        contentView.clipsToBounds = true
+        contentView.backgroundColor = .clear
+
+        // Configure image view
+        setupImageView()
+
+        // Configure title label
+        setupTitleLabel()
+
+        // Configure description label
+        setupDescriptionLabel()
+
+        // Apply constraints
+        applyConstraints()
+    }
+
+    private func setupImageView() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.image = UIImage(named: "gradient")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageView)
+    }
 
+    private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .white
         titleLabel.text = "THE DIARY OF A CEO"
-        titleLabel.font = CustomFont.regular.withSize(28)
+        titleLabel.font = CustomFont.regular.withSize(Constants.titleFontSize)
         titleLabel.textAlignment = .center
         contentView.addSubview(titleLabel)
-        
+    }
+
+    private func setupDescriptionLabel() {
         descLabel.translatesAutoresizingMaskIntoConstraints = false
         descLabel.textColor = .white
         descLabel.text = "CONVERSATION CARDS"
+        descLabel.font = CustomFont.bold.withSize(Constants.descFontSize)
         descLabel.textAlignment = .center
-        descLabel.font = CustomFont.bold.withSize(24)
         contentView.addSubview(descLabel)
+    }
 
+    private func applyConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 176),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            descLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 210),
-            descLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            descLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                            constant: Constants.titleTopOffset),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            descLabel.topAnchor.constraint(equalTo: contentView.topAnchor,
+                                           constant: Constants.descTopOffset),
+            descLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            descLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
     }
 }
