@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class HomeViewController: UIViewController {
     
@@ -38,9 +40,8 @@ class HomeViewController: UIViewController {
         return collectionView
     }()
     
-    private var items = ["Mend Relationships",
-                         "Coping with Grief & loss",
-                         "Discrimination"]
+    private var commonGoals = [Goal]()
+    private var selectedGoals = [Goal]()
     
     private var statsText = ["Longest Session",
                              "Longest Conversation",
@@ -55,9 +56,30 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        fetchGoals()
         setupUI()
-        startTypingAnimation(with: "Hello, Erin", interval: 0.07)
         animateOptions()
+    }
+    
+    private func fetchGoals() {
+        let db = Firestore.firestore()
+        let goalsRef = db.collection("commonGoals")
+
+        goalsRef.document(commonGoalsDocumentId).getDocument { document, error in
+            if let error = error {
+                print("Error getting document: \(error)")
+            } else {
+                if let document = document,
+                   let goals = document.data()?["goals"] as? [[String: Any]] {
+                    for goal in goals {
+                        let existingGoal = Goal(id: goal["id"] as? String ?? "",
+                                                name: goal["name"] as? String ?? "")
+                        self.commonGoals.append(existingGoal)
+                    }
+                    self.fetchUserData()
+                }
+            }
+        }
     }
     
     private func setupUI() {
@@ -97,7 +119,7 @@ class HomeViewController: UIViewController {
     }
     
     func setupGreetingLabel() {
-        greetingLabel.text = "Hello, Erin"
+        greetingLabel.text = ""
         greetingLabel.textAlignment = .left
         greetingLabel.numberOfLines = 0
         greetingLabel.font = CustomFont.bold.withSize(28)
@@ -316,7 +338,7 @@ class HomeViewController: UIViewController {
     private func animateOptions() {
         self.view.layoutIfNeeded()
         UIView.animate(withDuration: 0.7,
-                       delay: 0.8,
+                       delay: 1.5,
                        usingSpringWithDamping: 0.8,
                        initialSpringVelocity: 0.1,
                        options: .curveEaseInOut,
@@ -327,7 +349,7 @@ class HomeViewController: UIViewController {
         }, completion: nil)
         
         UIView.animate(withDuration: 0.7,
-                       delay: 0.9,
+                       delay: 1.6,
                        usingSpringWithDamping: 0.8,
                        initialSpringVelocity: 0.1,
                        options: .curveEaseInOut,
@@ -340,7 +362,7 @@ class HomeViewController: UIViewController {
         }, completion: nil)
         
         UIView.animate(withDuration: 0.7,
-                       delay: 1.0,
+                       delay: 1.7,
                        usingSpringWithDamping: 0.8,
                        initialSpringVelocity: 0.1,
                        options: .curveEaseInOut,
@@ -352,16 +374,45 @@ class HomeViewController: UIViewController {
             self.view.layoutIfNeeded()
         }, completion: nil)
     }
+    
+    private func fetchUserData() {
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found")
+            return
+        }
+
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.uid)
+
+        userRef.getDocument { (document, error) in
+            if let document = document,
+               let userName = document.data()?["name"] as? String,
+               let goalIds = document.data()?["selectedGoals"] as? [String] {
+                for id in goalIds {
+                    if let goal = self.commonGoals.first(where: { $0.id == id }) {
+                        self.selectedGoals.append(goal)
+                    }
+                }
+                if self.selectedGoals.isEmpty {
+                    self.selectedGoals = self.commonGoals
+                }
+                self.collectionView.reloadData()
+                self.startTypingAnimation(with: "Hello, \(userName.firstName)", interval: 0.07)
+            } else {
+                print("User document does not exist")
+            }
+        }
+    }
 }
 
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        return selectedGoals.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SuggestedConversationCell", for: indexPath) as! SuggestedConversationCell
-        cell.configureTitle(text: items[indexPath.row].uppercased())
+        cell.configureTitle(text: selectedGoals[indexPath.row].name.uppercased())
         return cell
     }
 }
@@ -385,5 +436,14 @@ private extension HomeViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.textAlignment = .right
         return button
+    }
+}
+
+extension String {
+    var firstName: String {
+        // Split the string into an array using spaces as the delimiter
+        let components = self.split(separator: " ")
+        // Return the first component as the first name, or the entire string if no spaces
+        return components.first.map(String.init) ?? self
     }
 }
