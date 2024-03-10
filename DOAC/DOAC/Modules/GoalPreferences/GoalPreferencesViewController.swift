@@ -9,61 +9,28 @@ import UIKit
 
 class GoalPreferencesViewController: UIViewController {
     
-    let titleLabel = UILabel()
-    let subTitleLabel = UILabel()
-    let scrollView = UIScrollView()
-    let stackView = UIStackView()
-    var buttons = [UIButton]()
-    var customizeButtonBottomConstraint: NSLayoutConstraint!
-    var vStackTopConstraint: NSLayoutConstraint!
+    private let titleLabel = UILabel()
+    private let subTitleLabel = UILabel()
+    private let scrollView = UIScrollView()
+    private let stackView = UIStackView()
+    private var buttons = [UIButton]()
+    private var customizeButtonBottomConstraint: NSLayoutConstraint!
+    private var vStackTopConstraint: NSLayoutConstraint!
     
-    let goalPreferences = ["Meaningful connections",
-                           "Self-improvement",
-                           "Coping with grief & loss",
-                           "Coping with discrimination",
-                           "Conversation starters",
-                           "Mend relationships",
-                           "Up-keep relationships",
-                           "It’s something else"]
+    private let goalPreferences = [
+        "Meaningful connections",
+        "Self-improvement",
+        "Coping with grief & loss",
+        "Coping with discrimination",
+        "Conversation starters",
+        "Mend relationships",
+        "Up-keep relationships",
+        "It’s something else"
+    ]
     
-    lazy var customizeButton: UIButton = {
-        let button = UIButton(type: .custom)
-        let projectText = "Next"
-        button.setTitle(projectText, for: .normal)
-        button.titleLabel?.font = CustomFont.bold.withSize(18)
-        button.backgroundColor = UIColor.white
-        button.setTitleColor(UIColor.black, for: .normal)
-        button.addTarget(self, action: #selector(customizeTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.clipsToBounds = true
-        button.layer.cornerRadius = 25
-        button.alpha = 0.0
-        return button
-    }()
-    
-    lazy var skipButton: UIButton = {
-        let button = UIButton(type: .custom)
-        let projectText = "Skip"
-        button.setTitle(projectText, for: .normal)
-        button.titleLabel?.font = CustomFont.bold.withSize(16)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.alpha = 0.0
-        return button
-    }()
-    
-    lazy var backButton: UIButton = {
-        let button = UIButton(type: .system)
-        if let image = UIImage(named: "back") {
-            button.setImage(image, for: .normal)
-        }
-        button.tintColor = UIColor.white
-        button.imageView?.contentMode = .scaleAspectFit
-        button.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private lazy var customizeButton: UIButton = createCustomiseButton()
+    private lazy var skipButton: UIButton = createSkipButton()
+    private lazy var backButton: UIButton = createBackButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -225,5 +192,46 @@ class GoalPreferencesViewController: UIViewController {
         let sessionSettingsVC = SessionSettingsViewController()
         self.navigationController?.pushViewController(sessionSettingsVC,
                                                       animated: true)
+    }
+}
+
+private extension GoalPreferencesViewController {
+    func createCustomiseButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        let text = "Customize my sessions"
+        button.setTitle(text, for: .normal)
+        button.titleLabel?.font = CustomFont.bold.withSize(18)
+        button.backgroundColor = UIColor.white
+        button.setTitleColor(UIColor.black, for: .normal)
+        button.addTarget(self, action: #selector(customizeTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 25
+        button.alpha = 0.0
+        return button
+    }
+
+    func createSkipButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        let text = "Skip"
+        button.setTitle(text, for: .normal)
+        button.titleLabel?.font = CustomFont.bold.withSize(16)
+        button.setTitleColor(UIColor.white.withAlphaComponent(0.8), for: .normal)
+        button.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.alpha = 0.0
+        return button
+    }
+
+    func createBackButton() -> UIButton {
+        let button = UIButton(type: .system)
+        if let image = UIImage(named: "back") {
+            button.setImage(image, for: .normal)
+        }
+        button.tintColor = UIColor.white
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }
 }

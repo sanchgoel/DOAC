@@ -11,7 +11,7 @@ class WalkthroughFirstCell: UICollectionViewCell {
     private let titleLabel = UILabel()
     private let descLabel = UILabel()
     private let imageView = UIImageView()
-
+    
     // Constants for layout and design
     private enum Constants {
         static let cornerRadius: CGFloat = 20
@@ -22,7 +22,7 @@ class WalkthroughFirstCell: UICollectionViewCell {
         static let descFontSize: CGFloat = 24
         static let borderColorHex = "#7C7C7C"
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -34,27 +34,27 @@ class WalkthroughFirstCell: UICollectionViewCell {
     
     private func setupUI() {
         backgroundColor = .clear
-
+        
         // Configure content view
         contentView.layer.borderColor = UIColor(hex: Constants.borderColorHex)?.cgColor
         contentView.layer.cornerRadius = Constants.cornerRadius
         contentView.layer.borderWidth = Constants.borderWidth
         contentView.clipsToBounds = true
         contentView.backgroundColor = .clear
-
+        
         // Configure image view
         setupImageView()
-
+        
         // Configure title label
         setupTitleLabel()
-
+        
         // Configure description label
         setupDescriptionLabel()
-
+        
         // Apply constraints
         applyConstraints()
     }
-
+    
     private func setupImageView() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -62,7 +62,7 @@ class WalkthroughFirstCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageView)
     }
-
+    
     private func setupTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .white
@@ -71,7 +71,7 @@ class WalkthroughFirstCell: UICollectionViewCell {
         titleLabel.textAlignment = .center
         contentView.addSubview(titleLabel)
     }
-
+    
     private func setupDescriptionLabel() {
         descLabel.translatesAutoresizingMaskIntoConstraints = false
         descLabel.textColor = .white
@@ -80,14 +80,14 @@ class WalkthroughFirstCell: UICollectionViewCell {
         descLabel.textAlignment = .center
         contentView.addSubview(descLabel)
     }
-
+    
     private func applyConstraints() {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
+            
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor,
                                             constant: Constants.titleTopOffset),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

@@ -11,7 +11,7 @@ class WalkthroughSecondCell: UICollectionViewCell {
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
     private let imageView = UIImageView()
-
+    
     // Constants for layout and style
     private enum Layout {
         static let cornerRadius: CGFloat = 20
@@ -24,7 +24,7 @@ class WalkthroughSecondCell: UICollectionViewCell {
         static let descriptionFontSize: CGFloat = 16
         static let lineHeightMultiple: CGFloat = 0.7
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -41,7 +41,7 @@ class WalkthroughSecondCell: UICollectionViewCell {
         configureDescriptionLabel()
         setupConstraints()
     }
-
+    
     private func configureCell() {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
@@ -51,7 +51,7 @@ class WalkthroughSecondCell: UICollectionViewCell {
         contentView.layer.cornerCurve = .continuous
         contentView.layer.cornerRadius = Layout.cornerRadius
     }
-
+    
     private func configureImageView() {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -59,7 +59,7 @@ class WalkthroughSecondCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageView)
     }
-
+    
     private func configureTitleLabel() {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = .black
@@ -69,19 +69,19 @@ class WalkthroughSecondCell: UICollectionViewCell {
         titleLabel.textAlignment = .center
         contentView.addSubview(titleLabel)
     }
-
+    
     private func configureDescriptionLabel() {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.textColor = UIColor.black.withAlphaComponent(0.8)
         descriptionLabel.numberOfLines = 0
         descriptionLabel.font = CustomFont.regular.withSize(Layout.descriptionFontSize)
         descriptionLabel.textAlignment = .center
-
+        
         let text = "Immerse in authentic conversations using The Conversation Cards, featuring questions asked by accomplished guests from The Diary Of A CEO podcast."
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = Layout.lineHeightMultiple
         paragraphStyle.alignment = .center
-
+        
         let attributes: [NSAttributedString.Key: Any] = [
             .paragraphStyle: paragraphStyle,
             .font: descriptionLabel.font
@@ -89,21 +89,21 @@ class WalkthroughSecondCell: UICollectionViewCell {
         
         let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
         descriptionLabel.attributedText = attributedString
-
+        
         contentView.addSubview(descriptionLabel)
     }
-
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
+            
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Layout.titleTopMargin),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.textHorizontalPadding),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.textHorizontalPadding),
-
+            
             descriptionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Layout.descriptionTopMargin),
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Layout.textHorizontalPadding),
             descriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Layout.textHorizontalPadding)
