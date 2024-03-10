@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import GoogleSignIn
+import FirebaseCore
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
@@ -103,12 +106,15 @@ class LoginViewController: UIViewController {
     private func setupLoginOptions() {
         let loginOptions = [("Google", "google"), ("Apple", "apple"), ("Facebook", "facebook")]
         
+        var index = 0
         for (title, imageName) in loginOptions {
             let loginView = createLoginView(with: title, imageName: imageName)
+            loginView.tag = index
             stackView.addArrangedSubview(loginView)
             
             // Add constraints if needed, e.g., set height
             loginView.heightAnchor.constraint(equalToConstant: 52).isActive = true
+            index += 1
         }
     }
     
@@ -156,7 +162,36 @@ class LoginViewController: UIViewController {
         // Determine which view was tapped and handle accordingly
         if let view = sender.view {
             // Here you can differentiate based on view or use the view's tag property if set
-            print("Login view tapped")
+            switch view.tag {
+            case 0:
+                handleGoogleSignIn()
+            default:
+                break
+            }
+        }
+    }
+    
+    func handleGoogleSignIn() {
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
+            guard error == nil else { return }
+            
+            guard let accessToken = signInResult?.user.accessToken, let idToken = signInResult?.user.idToken else {
+                print("Google Sign-In error: No authentication or ID token.")
+                return
+            }
+            
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString,
+                                                           accessToken: accessToken.tokenString)
+            // Now you can use this credential to authenticate with Firebase
+            Auth.auth().signIn(with: credential) { authResult, error in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                let preferencesVC = GoalPreferencesViewController()
+                self.navigationController?.pushViewController(preferencesVC,
+                                                              animated: true)
+            }
         }
     }
     

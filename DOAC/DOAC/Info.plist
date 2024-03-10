@@ -13,5 +13,16 @@
 		<string>Mukta-SemiBold.ttf</string>
 		<string>ReenieBeanie-Regular.ttf</string>
 	</array>
+    <key>GIDClientID</key>
+    <string>507559878258-6i0r3commd5suq5n4ou7gull8l1rdisb.apps.googleusercontent.com</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.507559878258-6i0r3commd5suq5n4ou7gull8l1rdisb</string>
+        </array>
+      </dict>
+    </array>
 </dict>
 </plist>
