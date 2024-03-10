@@ -13,11 +13,12 @@ import FirebaseFirestore
 
 class LoginViewController: UIViewController {
 
-    let titleLabel = UILabel()
-    let stackView = UIStackView()
-    var titleTopConstraint: NSLayoutConstraint!
+    private let titleLabel = UILabel()
+    private let stackView = UIStackView()
+    private let activityIndicator = UIActivityIndicatorView()
+    private var titleTopConstraint: NSLayoutConstraint!
     
-    lazy var skipButton: UIButton = {
+    private lazy var skipButton: UIButton = {
         let button = UIButton(type: .custom)
         let projectText = "Skip"
         button.setTitle(projectText, for: .normal)
@@ -63,7 +64,7 @@ class LoginViewController: UIViewController {
         titleLabel.textAlignment = .center
         view.addSubview(titleLabel)
         
-        self.view.addSubview(skipButton)
+        view.addSubview(skipButton)
 
         titleTopConstraint = titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 322)
         NSLayoutConstraint.activate([
@@ -73,7 +74,7 @@ class LoginViewController: UIViewController {
             skipButton.heightAnchor.constraint(equalToConstant: 40),
             skipButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
             skipButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            skipButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -71)
+            skipButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -71),
         ])
     }
     
@@ -96,11 +97,19 @@ class LoginViewController: UIViewController {
         stackView.alpha = 0.0
         view.addSubview(stackView)
 
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .gray
+        activityIndicator.style = .medium
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(activityIndicator)
+        
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 46),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -46),
-            stackView.heightAnchor.constraint(equalToConstant: 180)
+            stackView.heightAnchor.constraint(equalToConstant: 180),
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -40)
         ])
     }
     
@@ -162,7 +171,6 @@ class LoginViewController: UIViewController {
     @objc private func handleLoginTap(_ sender: UITapGestureRecognizer) {
         // Determine which view was tapped and handle accordingly
         if let view = sender.view {
-            // Here you can differentiate based on view or use the view's tag property if set
             switch view.tag {
             case 0:
                 handleGoogleSignIn()
@@ -173,6 +181,7 @@ class LoginViewController: UIViewController {
     }
     
     private func handleGoogleSignIn() {
+        activityIndicator.startAnimating()
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
             guard error == nil else { return }
             
@@ -252,6 +261,7 @@ class LoginViewController: UIViewController {
     }
     
     func launchGoalsController(selectedGoals: [String]) {
+        activityIndicator.stopAnimating()
         let preferencesVC = GoalPreferencesViewController(selectedGoals: selectedGoals)
         self.navigationController?.pushViewController(preferencesVC,
                                                       animated: true)
