@@ -19,6 +19,10 @@ class HomeViewController: UIViewController {
     var statsTitleLabels = [UILabel]()
     var statsValueLabels = [UILabel]()
     
+    var quickStartTopConstraint: NSLayoutConstraint!
+    var suggestedTopConstraint: NSLayoutConstraint!
+    var statsTopConstraint: NSLayoutConstraint!
+    
     var statsSeeAllButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("See All", for: .normal)
@@ -69,6 +73,8 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupUI()
+        startTypingAnimation(with: "Hello, Erin", interval: 0.07)
+        animateOptions()
     }
     
     private func setupUI() {
@@ -121,6 +127,7 @@ class HomeViewController: UIViewController {
             greetingLabel.topAnchor.constraint(equalTo: scrollView.topAnchor),
             greetingLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 22),
             greetingLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -22),
+            greetingLabel.heightAnchor.constraint(equalToConstant: 35),
         ])
     }
     
@@ -129,14 +136,14 @@ class HomeViewController: UIViewController {
         containerView.layer.borderColor = UIColor(hex: "#7C7C7C")?.cgColor
         containerView.layer.cornerRadius = 8
         containerView.backgroundColor = .clear
-        containerView.alpha = 1.0
+        containerView.alpha = 0.0
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         scrollView.addSubview(containerView)
-
-        // Set constraints for the containerView
+        
+        quickStartTopConstraint = containerView.topAnchor.constraint(equalTo: greetingLabel.bottomAnchor, constant: 80)
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: greetingLabel.bottomAnchor, constant: 40),
+            quickStartTopConstraint,
             containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
             containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
             containerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 48)
@@ -205,17 +212,21 @@ class HomeViewController: UIViewController {
         suggestedLabel.numberOfLines = 0
         suggestedLabel.font = CustomFont.bold.withSize(18)
         suggestedLabel.textColor = .white
+        suggestedLabel.alpha = 0.0
         suggestedLabel.translatesAutoresizingMaskIntoConstraints = false
                 
         scrollView.addSubview(suggestedLabel)
         
+        conversationSeeAllButton.alpha = 0.0
         scrollView.addSubview(conversationSeeAllButton)
         
         collectionView.dataSource = self
+        collectionView.alpha = 0.0
         scrollView.addSubview(collectionView)
         
+        suggestedTopConstraint = suggestedLabel.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 80)
         NSLayoutConstraint.activate([
-            suggestedLabel.topAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 40),
+            suggestedTopConstraint,
             suggestedLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 22),
             suggestedLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -22),
             conversationSeeAllButton.centerYAnchor.constraint(equalTo: suggestedLabel.centerYAnchor),
@@ -235,6 +246,7 @@ class HomeViewController: UIViewController {
         statsLabel.numberOfLines = 0
         statsLabel.font = CustomFont.bold.withSize(18)
         statsLabel.textColor = .white
+        statsLabel.alpha = 0.0
         statsLabel.translatesAutoresizingMaskIntoConstraints = false
         
         scrollView.addSubview(statsLabel)
@@ -244,15 +256,17 @@ class HomeViewController: UIViewController {
         statsContainerView.layer.cornerRadius = 8
         statsContainerView.backgroundColor = .clear
         statsContainerView.alpha = 1.0
+        statsContainerView.alpha = 0.0
         statsContainerView.translatesAutoresizingMaskIntoConstraints = false
         
         scrollView.addSubview(statsContainerView)
         
+        statsSeeAllButton.alpha = 0.0
         scrollView.addSubview(statsSeeAllButton)
 
-        // Set constraints for the containerView
+        statsTopConstraint = statsLabel.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 80)
         NSLayoutConstraint.activate([
-            statsLabel.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 40),
+            statsTopConstraint,
             statsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 22),
             statsLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -22),
             statsSeeAllButton.centerYAnchor.constraint(equalTo: statsLabel.centerYAnchor),
@@ -299,6 +313,61 @@ class HomeViewController: UIViewController {
                 sValueLabel.trailingAnchor.constraint(equalTo: statsContainerView.trailingAnchor, constant: -16),
             ])
         }
+    }
+    
+    private func startTypingAnimation(with text: String, interval: TimeInterval) {
+        greetingLabel.text = ""
+        var charIndex = 0
+        Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            if charIndex < text.count {
+                let charIndexEnd = text.index(text.startIndex, offsetBy: charIndex)
+                self.greetingLabel.text = String(text[...charIndexEnd])
+                charIndex += 1
+            } else {
+                timer.invalidate()
+            }
+        }
+    }
+    
+    private func animateOptions() {
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.7,
+                       delay: 0.8,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.1,
+                       options: .curveEaseInOut,
+                       animations: {
+            self.quickStartTopConstraint.constant = 40
+            self.containerView.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 0.7,
+                       delay: 0.9,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.1,
+                       options: .curveEaseInOut,
+                       animations: {
+            self.suggestedTopConstraint.constant = 40
+            self.collectionView.alpha = 1.0
+            self.suggestedLabel.alpha = 1.0
+            self.conversationSeeAllButton.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+        
+        UIView.animate(withDuration: 0.7,
+                       delay: 1.0,
+                       usingSpringWithDamping: 0.8,
+                       initialSpringVelocity: 0.1,
+                       options: .curveEaseInOut,
+                       animations: {
+            self.statsTopConstraint.constant = 40
+            self.statsContainerView.alpha = 1.0
+            self.statsLabel.alpha = 1.0
+            self.statsSeeAllButton.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
 }
 

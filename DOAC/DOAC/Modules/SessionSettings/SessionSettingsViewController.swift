@@ -311,6 +311,8 @@ class SessionSettingsViewController: UIViewController {
     }
     
     @objc func saveTapped() {
-        
+        let homeVC = HomeViewController()
+        self.navigationController?.pushViewController(homeVC,
+                                                      animated: true)
     }
 }
