@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseAuth
 
 class GoalPreferencesViewController: UIViewController {
     
@@ -17,36 +19,58 @@ class GoalPreferencesViewController: UIViewController {
     private var customizeButtonBottomConstraint: NSLayoutConstraint!
     private var vStackTopConstraint: NSLayoutConstraint!
     
-    private let goalPreferences = [
-        "Meaningful connections",
-        "Self-improvement",
-        "Coping with grief & loss",
-        "Coping with discrimination",
-        "Conversation starters",
-        "Mend relationships",
-        "Up-keep relationships",
-        "It’s something else"
-    ]
+    private var commonGoals = [Goal]()
+    private var selectedGoals: [String]
     
     private lazy var customizeButton: UIButton = createCustomiseButton()
     private lazy var skipButton: UIButton = createSkipButton()
     private lazy var backButton: UIButton = createBackButton()
     
+    init(selectedGoals: [String]) {
+        self.selectedGoals = selectedGoals
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black
+        fetchGoals()
         setupUI()
         animateOptions()
     }
     
-    func setupUI() {
+    private func fetchGoals() {
+        let db = Firestore.firestore()
+        let goalsRef = db.collection("commonGoals")
+
+        goalsRef.document(commonGoalsDocumentId).getDocument { document, error in
+            if let error = error {
+                print("Error getting document: \(error)")
+            } else {
+                if let document = document,
+                   let goals = document.data()?["goals"] as? [[String: Any]] {
+                    for goal in goals {
+                        let existingGoal = Goal(id: goal["id"] as? String ?? "",
+                                                name: goal["name"] as? String ?? "")
+                        self.commonGoals.append(existingGoal)
+                    }
+                    self.addButtonsToStack()
+                }
+            }
+        }
+    }
+    
+    private func setupUI() {
         setupLabels()
         setupScrollView()
         setupStackView()
-        addButtonsToStack()
     }
     
-    func setupLabels() {
+    private func setupLabels() {
         titleLabel.text = "What are your goals?"
         titleLabel.textAlignment = .center
         titleLabel.font = CustomFont.bold.withSize(16)
@@ -134,13 +158,14 @@ class GoalPreferencesViewController: UIViewController {
     private func addButtonsToStack() {
         for index in 0...7 {
             let button = UIButton(type: .custom)
-            button.setTitle(goalPreferences[index], for: .normal)
+            button.setTitle(commonGoals[index].name, for: .normal)
             button.titleLabel?.font = CustomFont.bold.withSize(18)
             button.setTitleColor(.white, for: .normal)
             button.setTitleColor(.black, for: .selected)
             button.backgroundColor = .black
             button.layer.borderColor = UIColor.white.cgColor
             button.layer.borderWidth = 1.0
+            button.tag = index
             button.layer.cornerRadius = 25
             button.translatesAutoresizingMaskIntoConstraints = false
             button.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -150,15 +175,25 @@ class GoalPreferencesViewController: UIViewController {
             stackView.addArrangedSubview(button)
             buttons.append(button)
         }
+        
+        for (index, button) in buttons.enumerated() {
+            let buttonId = commonGoals[index].id
+            if selectedGoals.contains(where: { $0 == buttonId }) {
+                button.isSelected = true
+                button.backgroundColor = .white
+            }
+        }
     }
     
     @objc private func buttonTapped(_ sender: UIButton) {
         sender.isSelected.toggle()  // Toggle the selected state
         
         if sender.isSelected {
+            selectedGoals.append(commonGoals[sender.tag].id)
             sender.backgroundColor = .white
             sender.layer.borderColor = UIColor.black.cgColor
         } else {
+            selectedGoals.removeAll(where: { $0 == commonGoals[sender.tag].id })
             sender.backgroundColor = .black
             sender.layer.borderColor = UIColor.white.cgColor
         }
@@ -176,7 +211,26 @@ class GoalPreferencesViewController: UIViewController {
         }, completion: nil)
     }
     
+    private func updateUserData(updates: [String: Any]) {
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found")
+            return
+        }
+
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.uid)
+
+        userRef.updateData(updates) { error in
+            if let error = error {
+                print("Error updating document: \(error)")
+            } else {
+                print("User document successfully updated")
+            }
+        }
+    }
+    
     @objc func customizeTapped() {
+        updateUserData(updates: ["selectedGoals": selectedGoals])
         proceedToSessionSettings()
     }
     
@@ -235,3 +289,10 @@ private extension GoalPreferencesViewController {
         return button
     }
 }
+
+struct Goal {
+    let id: String
+    let name: String
+}
+
+let commonGoalsDocumentId = "azJ6fS4xBPqguMBQyfXE"

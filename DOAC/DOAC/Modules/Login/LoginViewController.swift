@@ -9,6 +9,7 @@ import UIKit
 import GoogleSignIn
 import FirebaseCore
 import FirebaseAuth
+import FirebaseFirestore
 
 class LoginViewController: UIViewController {
 
@@ -171,7 +172,7 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func handleGoogleSignIn() {
+    private func handleGoogleSignIn() {
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { signInResult, error in
             guard error == nil else { return }
             
@@ -188,15 +189,76 @@ class LoginViewController: UIViewController {
                     print(error.localizedDescription)
                     return
                 }
-                let preferencesVC = GoalPreferencesViewController()
-                self.navigationController?.pushViewController(preferencesVC,
-                                                              animated: true)
+                guard let user = authResult?.user else { return }
+                self.checkIfUserExists(user: user)
             }
         }
     }
     
+    private func checkIfUserExists(user: User) {
+        let db = Firestore.firestore()
+        let usersRef = db.collection("users")
+
+        usersRef.document(user.uid).getDocument { document, error in
+            if let error = error {
+                print("Error getting document: \(error)")
+            } else {
+                if let document = document, document.exists {
+                    // User exists, fetch preferences
+                    self.fetchUserPreferences(user: user)
+                } else {
+                    // No user found, create new user document
+                    self.createNewUser(user: user)
+                }
+            }
+        }
+    }
+
+    private func createNewUser(user: User) {
+        let db = Firestore.firestore()
+        let userData: [String: Any] = [
+            "uid": user.uid,
+            "email": user.email ?? "",
+            "name": user.displayName ?? "",
+            "selectedGoals": [String](),
+            "sessionSettings": ["music": "jazz",
+                                "volume": 0.5,
+                                "recordSession": false,
+                                "showConversationDuration": true,
+                                "dimScreen": false]
+        ]
+
+        db.collection("users").document(user.uid).setData(userData) { error in
+            if let error = error {
+                
+            } else {
+                self.launchGoalsController(selectedGoals: [])
+            }
+        }
+    }
+
+    func fetchUserPreferences(user: User) {
+        let db = Firestore.firestore()
+
+        db.collection("users").document(user.uid).getDocument { (document, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if let document = document, let selectedGoals = document.data()?["selectedGoals"] as? [String] {
+                    self.launchGoalsController(selectedGoals: selectedGoals)
+                }
+            }
+        }
+    }
+    
+    func launchGoalsController(selectedGoals: [String]) {
+        let preferencesVC = GoalPreferencesViewController(selectedGoals: selectedGoals)
+        self.navigationController?.pushViewController(preferencesVC,
+                                                      animated: true)
+    }
+    
     @objc func skipTapped() {
-        let preferencesVC = GoalPreferencesViewController()
+        let preferencesVC = GoalPreferencesViewController(selectedGoals: [])
         self.navigationController?.pushViewController(preferencesVC,
                                                       animated: true)
     }

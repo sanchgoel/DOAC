@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class SessionSettingsViewController: UIViewController {
     
@@ -14,6 +16,8 @@ class SessionSettingsViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     private let containerView = UIView()
+    private let slider = UISlider()
+    private var toggleArray = [UISwitch]()
     private var vStackTopConstraint: NSLayoutConstraint!
     private var saveButtonBottomConstraint: NSLayoutConstraint!
     
@@ -32,6 +36,7 @@ class SessionSettingsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black
         setupUI()
+        fetchUserData()
         animateOptions()
     }
     
@@ -158,6 +163,7 @@ class SessionSettingsViewController: UIViewController {
             switch index {
             case 2,3,4:
                 let toggle = UISwitch()
+                toggleArray.append(toggle)
                 view.addSubview(toggle)
                 toggle.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
@@ -166,7 +172,6 @@ class SessionSettingsViewController: UIViewController {
                 ])
                 
             case 1:
-                let slider = UISlider()
                 slider.minimumTrackTintColor = .white
                 view.addSubview(slider)
                 slider.translatesAutoresizingMaskIntoConstraints = false
@@ -289,9 +294,58 @@ class SessionSettingsViewController: UIViewController {
     }
     
     @objc func saveTapped() {
+        updateUserData(updates: ["sessionSettings": ["music": "jazz",
+                                                     "volume": slider.value,
+                                                     "recordSession": toggleArray[0].isOn,
+                                                     "showConversationDuration": toggleArray[1].isOn,
+                                                     "dimScreen": toggleArray[2].isOn]])
         let homeVC = HomeViewController()
         self.navigationController?.pushViewController(homeVC,
                                                       animated: true)
+    }
+    
+    private func fetchUserData() {
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found")
+            return
+        }
+
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.uid)
+
+        userRef.getDocument { (document, error) in
+            if let document = document,
+               let sessionSettings = document.data()?["sessionSettings"] as? [String: Any],
+               let recordSessionEnabled = sessionSettings["recordSession"] as? Bool,
+               let showDurationEnabled = sessionSettings["showConversationDuration"] as? Bool,
+               let dimScreenEnabled = sessionSettings["dimScreen"] as? Bool,
+               let volumeValue = sessionSettings["volume"] as? Float {
+                self.toggleArray[0].isOn = recordSessionEnabled
+                self.toggleArray[1].isOn = showDurationEnabled
+                self.toggleArray[2].isOn = dimScreenEnabled
+                self.slider.setValue(volumeValue, animated: false)
+            } else {
+                print("User document does not exist")
+            }
+        }
+    }
+    
+    private func updateUserData(updates: [String: Any]) {
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found")
+            return
+        }
+
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.uid)
+
+        userRef.updateData(updates) { error in
+            if let error = error {
+                print("Error updating document: \(error)")
+            } else {
+                print("User document successfully updated")
+            }
+        }
     }
 }
 
